@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+
+  jupyter:
+    container_name: jupyter
+    build:
+        context: .
+        dockerfile: Dockerfile
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+    volumes:
+      - jupyter:/home/jovyan/work
+    ports:
+      - "8888:8888"
+    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+
+
+  db:
+    container_name: sql
+    image: mysql
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      MYSQL_DATABASE: ads
+      MYSQL_ROOT_PASSWORD: 2311
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 3306:3306
+
+volumes:
+  jupyter:
+  
